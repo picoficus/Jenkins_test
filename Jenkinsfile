@@ -16,23 +16,25 @@ pipeline {
             sh 'mkdir sparkjava'
             pwd(tmp: true)
             dir(path: 'sparkjava/')
-            git(url: 'https://github.com/kliakos/sparkjava-war-example.git', branch: 'main')
+            git(url: 'https://github.com/kliakos/sparkjava-war-example.git', branch: 'master')
             sh 'mvn clean install'
+            archiveArtifacts 'target/*.war'
           }
         }
 
       }
     }
 
-    stage('?') {
+    stage('reports') {
       steps {
         sleep 1
+        junit 'target/surefire-reports/*.xml'
       }
     }
 
     stage('End') {
       steps {
-        sleep 1
+        sh 'echo "Fin des taches, c\'est ok"'
       }
     }
 
